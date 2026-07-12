@@ -10,6 +10,25 @@ public class CircularList<T> {
         this.listSize = 0;
     }
 
+    public void remove(int index){
+        if (index >= this.listSize){
+            throw new IndexOutOfBoundsException("O indíce é maior que o tamanho da lista.");
+        }
+        Node<T> auxiliarNode = this.tail;
+        if (index == 0){
+            this.tail = tail.getNextNode();
+            this.head.setNextNode(this.tail);
+        }else if (index == 1){
+            this.tail.setNextNode(this.tail.getNextNode().getNextNode());
+        }else{
+            for (int i = 0; i < index-1; i++) {
+                auxiliarNode = auxiliarNode.getNextNode();
+            }
+            auxiliarNode.setNextNode(auxiliarNode.getNextNode().getNextNode());
+        }
+        this.listSize--;
+    }
+
     public T get(int index){
         return getNode(index).getContent();
     }
