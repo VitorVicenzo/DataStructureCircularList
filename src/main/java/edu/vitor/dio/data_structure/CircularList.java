@@ -10,6 +10,20 @@ public class CircularList<T> {
         this.listSize = 0;
     }
 
+    private Node<T> getNode(int index){
+        if (this.isEmpty())
+            throw new IndexOutOfBoundsException("A lista está vazia");
+
+        if (index == 0){
+            return this.tail;
+        }
+        Node<T> auxiliarNode = this.tail;
+        for (int i = 0; (i < index) && (auxiliarNode != null); i++) {
+            auxiliarNode = auxiliarNode.getNextNode();
+        }
+        return auxiliarNode;
+    }
+
     public int size(){
         return this.listSize;
     }
