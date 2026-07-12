@@ -1,0 +1,495 @@
+Index: ../.idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/vcs.xml b/../.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1783876616677)
++++ b/../.idea/vcs.xml	(date 1783876616677)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: ../.idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/encodings.xml b/../.idea/encodings.xml
+new file mode 100644
+--- /dev/null	(date 1783876616675)
++++ b/../.idea/encodings.xml	(date 1783876616675)
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Encoding">
++    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
++  </component>
++</project>
+\ No newline at end of file
+Index: ../src/main/java/edu/vitor/dio/doublechainlist/DoubleChainList.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../src/main/java/edu/vitor/dio/doublechainlist/DoubleChainList.java b/../src/main/java/edu/vitor/dio/doublechainlist/DoubleChainList.java
+new file mode 100644
+--- /dev/null	(date 1783876616681)
++++ b/../src/main/java/edu/vitor/dio/doublechainlist/DoubleChainList.java	(date 1783876616681)
+@@ -0,0 +1,96 @@
++package edu.vitor.dio.doublechainlist;
++
++public class DoubleChainList<T> {
++
++    private DoubleNode<T> firstNode;
++    private DoubleNode<T> lastNode;
++
++    private int listSize;
++
++    public DoubleChainList(){
++        firstNode = null;
++        lastNode = null;
++        this.listSize = 0;
++    }
++
++    public T get(int index){
++        return this.getNode(index).getContent();
++    }
++
++    public void add(T element){
++        DoubleNode<T> newNode = new DoubleNode<>(element);
++        newNode.setNextNode(null);
++        newNode.setPreviousNode(lastNode);
++        if (firstNode == null){
++            firstNode = newNode;
++        }
++        if (lastNode != null){
++             lastNode.setNextNode(newNode);
++        }
++        lastNode = newNode;
++        listSize++;
++    }
++
++    public void add(int index, T element){
++        DoubleNode<T> auxiliarNode = getNode(index);
++        DoubleNode<T> newNode = new DoubleNode<>(element);
++        newNode.setNextNode(auxiliarNode);
++
++        if (newNode.getNextNode() != null){
++            newNode.setPreviousNode(auxiliarNode.getPreviousNode());
++            newNode.getNextNode().setPreviousNode(newNode);
++        }else{
++            newNode.setPreviousNode(lastNode);
++            lastNode = newNode;
++        }
++        if (index == 0){
++            firstNode = newNode;
++        }else{
++            newNode.getPreviousNode().setNextNode(newNode);
++        }
++        listSize++;
++    }
++
++    public void remove(int index){
++        if(index == 0){
++            firstNode = firstNode.getNextNode();
++            if(firstNode != null){
++                firstNode.setPreviousNode(null);
++            }
++        }else{
++            DoubleNode<T> auxiliarNode = getNode(index);
++            auxiliarNode.getPreviousNode().setNextNode(auxiliarNode.getNextNode());
++            if (auxiliarNode != lastNode){
++                auxiliarNode.getNextNode().setPreviousNode(auxiliarNode.getPreviousNode());
++            }else{
++                lastNode = auxiliarNode;
++            }
++        }
++
++        this.listSize--;
++    }
++
++    private DoubleNode<T> getNode(int index){
++        DoubleNode<T> auxiliarNode = firstNode;
++        for (int i = 0; (i < index) && (auxiliarNode != null); i++) {
++            auxiliarNode = auxiliarNode.getNextNode();
++        }
++        return auxiliarNode;
++    }
++
++    public int size(){
++        return this.listSize;
++    }
++
++    @Override
++    public String toString() {
++        String returnStr = "";
++        DoubleNode<T> auxiliarNode = firstNode;
++        for (int i = 0; i <size(); i++) {
++            returnStr += "{Node(content=" + auxiliarNode.getContent() + ")} ---->";
++            auxiliarNode = auxiliarNode.getNextNode();
++        }
++        returnStr += "null";
++        return returnStr;
++    }
++}
+Index: ../src/main/java/edu/vitor/dio/doublechainlist/DoubleNode.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../src/main/java/edu/vitor/dio/doublechainlist/DoubleNode.java b/../src/main/java/edu/vitor/dio/doublechainlist/DoubleNode.java
+new file mode 100644
+--- /dev/null	(date 1783876616683)
++++ b/../src/main/java/edu/vitor/dio/doublechainlist/DoubleNode.java	(date 1783876616683)
+@@ -0,0 +1,43 @@
++package edu.vitor.dio.doublechainlist;
++
++public class DoubleNode<T> {
++
++    private T content;
++    private DoubleNode<T> nextNode;
++    private DoubleNode<T> previousNode;
++
++    public DoubleNode(T content){
++        this.content = content;
++    }
++
++    public T getContent() {
++        return content;
++    }
++
++    public void setContent(T content) {
++        this.content = content;
++    }
++
++    public DoubleNode<T> getNextNode() {
++        return nextNode;
++    }
++
++    public void setNextNode(DoubleNode<T> nextNode) {
++        this.nextNode = nextNode;
++    }
++
++    public DoubleNode<T> getPreviousNode() {
++        return previousNode;
++    }
++
++    public void setPreviousNode(DoubleNode<T> previousNode) {
++        this.previousNode = previousNode;
++    }
++
++    @Override
++    public String toString() {
++        return "DoubleNode{" +
++                "content=" + content +
++                '}';
++    }
++}
+Index: ../.idea/.idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/.idea/misc.xml b/../.idea/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1783876616672)
++++ b/../.idea/.idea/misc.xml	(date 1783876616672)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="25" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++</project>
+\ No newline at end of file
+Index: ../.idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/.gitignore b/../.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1783876616669)
++++ b/../.idea/.gitignore	(date 1783876616669)
+@@ -0,0 +1,10 @@
++# Default ignored files
++/shelf/
++/workspace.xml
++# Editor-based HTTP Client requests
++/httpRequests/
++# Ignored default folder with query files
++/queries/
++# Datasource local storage ignored files
++/dataSources/
++/dataSources.local.xml
+Index: ../.idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/compiler.xml b/../.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1783876616674)
++++ b/../.idea/compiler.xml	(date 1783876616674)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile name="Maven default annotation processors profile" enabled="true">
++        <sourceOutputDir name="target/generated-sources/annotations" />
++        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
++        <outputRelativeToContentRoot value="true" />
++        <module name="DoubleChainList" />
++      </profile>
++    </annotationProcessing>
++  </component>
++</project>
+\ No newline at end of file
+Index: ../.idea/.idea/.idea.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/.idea/.idea.iml b/../.idea/.idea/.idea.iml
+new file mode 100644
+--- /dev/null	(date 1783876616670)
++++ b/../.idea/.idea/.idea.iml	(date 1783876616670)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: ../.idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/jarRepositories.xml b/../.idea/jarRepositories.xml
+new file mode 100644
+--- /dev/null	(date 1783876616675)
++++ b/../.idea/jarRepositories.xml	(date 1783876616675)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="https://repo.maven.apache.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: ../.idea/.idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/.idea/modules.xml b/../.idea/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1783876616672)
++++ b/../.idea/.idea/modules.xml	(date 1783876616672)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/.idea.iml" filepath="$PROJECT_DIR$/.idea/.idea.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: ../src/main/java/edu/vitor/dio/doublechainlist/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../src/main/java/edu/vitor/dio/doublechainlist/Main.java b/../src/main/java/edu/vitor/dio/doublechainlist/Main.java
+new file mode 100644
+--- /dev/null	(date 1783876616683)
++++ b/../src/main/java/edu/vitor/dio/doublechainlist/Main.java	(date 1783876616683)
+@@ -0,0 +1,24 @@
++package edu.vitor.dio.doublechainlist;
++
++public class Main {
++    public static void main (String[] args){
++
++        DoubleChainList<String> myChainList = new DoubleChainList<>();
++
++        myChainList.add("c1");
++        myChainList.add("c2");
++        myChainList.add("c3");
++        myChainList.add("c4");
++        myChainList.add("c5");
++        myChainList.add("c6");
++        myChainList.add("c7");
++
++        System.out.println(myChainList);
++
++        myChainList.remove(3);
++        myChainList.add(3, "99");
++
++        System.out.println(myChainList);
++        System.out.println(myChainList.get(3));
++    }
++}
+Index: ../Projects
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../Projects b/../Projects
+new file mode 100644
+--- /dev/null	(date 1783876616678)
++++ b/../Projects	(date 1783876616678)
+@@ -0,0 +1,1 @@
++
+Index: ../.idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/misc.xml b/../.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1783876616677)
++++ b/../.idea/misc.xml	(date 1783876616677)
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="MavenProjectsManager">
++    <option name="originalFiles">
++      <list>
++        <option value="$PROJECT_DIR$/pom.xml" />
++      </list>
++    </option>
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="25" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++</project>
+\ No newline at end of file
+Index: ../pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../pom.xml b/../pom.xml
+new file mode 100644
+--- /dev/null	(date 1783876616678)
++++ b/../pom.xml	(date 1783876616678)
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <modelVersion>4.0.0</modelVersion>
++
++    <groupId>org.example</groupId>
++    <artifactId>DoubleChainList</artifactId>
++    <version>1.0-SNAPSHOT</version>
++
++    <properties>
++        <maven.compiler.source>25</maven.compiler.source>
++        <maven.compiler.target>25</maven.compiler.target>
++        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
++    </properties>
++
++</project>
+\ No newline at end of file
+Index: ../.idea/.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../.idea/.idea/workspace.xml b/../.idea/.idea/workspace.xml
+new file mode 100644
+--- /dev/null	(date 1783876616674)
++++ b/../.idea/.idea/workspace.xml	(date 1783876616674)
+@@ -0,0 +1,61 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ChangeListManager">
++    <list default="true" id="930e1b7d-47f0-4a37-a1b3-2f833d065e31" name="Changes" comment="" />
++    <option name="SHOW_DIALOG" value="false" />
++    <option name="HIGHLIGHT_CONFLICTS" value="true" />
++    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
++    <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="EmbeddingIndexingInfo">
++    <option name="cachedIndexableFilesCount" value="6" />
++  </component>
++  <component name="McpProjectServerCommands">
++    <commands />
++    <urls />
++  </component>
++  <component name="ProjectColorInfo"><![CDATA[{
++  "associatedIndex": 2,
++  "fromUser": false
++}]]></component>
++  <component name="ProjectId" id="3GPNCN5LZkq9Th04M9wPj29dvYI" />
++  <component name="ProjectViewState">
++    <option name="hideEmptyMiddlePackages" value="true" />
++    <option name="showLibraryContents" value="true" />
++  </component>
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "ModuleVcsDetector.initialDetectionPerformed": "true",
++    "RunOnceActivity.MCP Project settings loaded": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
++    "codeWithMe.voiceChat.enabledByDefault": "false",
++    "kotlin-language-version-configured": "true",
++    "last_opened_file_path": "C:/workspace/DIO/Data_Structure/DoubleChainList/.idea",
++    "nodejs_package_manager_path": "npm",
++    "vue.rearranger.settings.migration": "true"
++  }
++}]]></component>
++  <component name="SharedIndexes">
++    <attachedChunks>
++      <set>
++        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.26222.65" />
++        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.26222.65" />
++      </set>
++    </attachedChunks>
++  </component>
++  <component name="TaskManager">
++    <task active="true" id="Default" summary="Default task">
++      <changelist id="930e1b7d-47f0-4a37-a1b3-2f833d065e31" name="Changes" comment="" />
++      <created>1783869117371</created>
++      <option name="number" value="Default" />
++      <option name="presentableId" value="Default" />
++      <updated>1783869117371</updated>
++      <workItem from="1783869119907" duration="25000" />
++    </task>
++    <servers />
++  </component>
++  <component name="TypeScriptGeneratedFilesManager">
++    <option name="version" value="3" />
++  </component>
++</project>
+\ No newline at end of file
