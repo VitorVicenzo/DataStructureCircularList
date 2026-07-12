@@ -70,4 +70,18 @@ public class CircularList<T> {
     public boolean isEmpty(){
         return this.listSize == 0 ? true:false;
     }
+
+    @Override
+    public String toString() {
+        String returnString = "";
+        Node<T> auxiliarNode = this.tail;
+        for (int i = 0; i < size(); i++) {
+            returnString += "{Node(content=" + auxiliarNode.getContent() + ")}----> ";
+            auxiliarNode = auxiliarNode.getNextNode();
+        }
+
+        returnString += this.size() != 0 ? "(Return to beginning)":"{}";
+
+        return returnString;
+    }
 }
