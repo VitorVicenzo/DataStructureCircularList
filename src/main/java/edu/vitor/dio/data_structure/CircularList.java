@@ -8,6 +8,22 @@ public class CircularList<T> {
 
     public CircularList(){
         this.listSize = 0;
+        this.head = null;
+        this.tail = null;
+    }
+
+    public void add(T content){
+        Node<T> newNode = new Node<>(content);
+        if(this.isEmpty()){
+            this.head = newNode;
+            this.tail = this.head;
+            this.head.setNextNode(tail);
+        }else{
+            newNode.setNextNode(this.tail);
+            this.head.setNextNode(newNode);
+            this.tail = newNode;
+        }
+        this.listSize++;
     }
 
     public void remove(int index){
